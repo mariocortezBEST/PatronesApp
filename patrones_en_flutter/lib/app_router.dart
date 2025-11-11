@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/home/home_page.dart';
 import 'features/decision_tree/tree_navigator_page.dart';
+import 'features/decision_tree/decision_summary_page.dart';
 import 'features/pattern_detail/pattern_page.dart';
 import 'core/utils/decision_tree_builder.dart';
 import 'core/models/design_pattern.dart';
@@ -24,6 +25,11 @@ class AppRouter {
           final nodeId = int.tryParse(state.pathParameters['nodeId'] ?? '0') ?? 0;
           return TreeNavigatorPage(nodeId: nodeId);
         },
+      ),
+      // Ruta para la página de resumen de decisiones.
+      GoRoute(
+        path: '/summary',
+        builder: (context, state) => const DecisionSummaryPage(),
       ),
       // Ruta para la página de detalles del patrón de diseño.
       // El ':patternName' se usa para encontrar y mostrar el patrón correcto.
