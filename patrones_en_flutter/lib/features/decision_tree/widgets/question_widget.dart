@@ -6,7 +6,7 @@ import '../../../core/models/decision_node.dart';
 
 class QuestionWidget extends StatelessWidget {
   final DecisionNode node;
-  final Function(int) onAnswerSelected;
+  final Function(int nextNodeId, String answerText) onAnswerSelected;
 
   const QuestionWidget({
     super.key,
@@ -44,7 +44,7 @@ class QuestionWidget extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: OutlinedButton(
-                onPressed: () => onAnswerSelected(entry.value),
+                onPressed: () => onAnswerSelected(entry.value, entry.key),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.all(20),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -3,8 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../core/models/decision_node.dart';
 import '../../core/utils/decision_tree_builder.dart';
+import '../../core/providers/decision_history_provider.dart';
 import 'widgets/question_widget.dart';
 import '../../shared/widgets/app_scaffold.dart';
 
@@ -17,14 +19,32 @@ class TreeNavigatorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Obtiene el nodo actual del árbol usando el ID de la URL.
     final DecisionNode? node = decisionTree.getNodeById(nodeId);
+    // Accede al provider del historial de decisiones
+    final historyProvider = Provider.of<DecisionHistoryProvider>(context);
 
     return AppScaffold(
       title: 'Asistente de Decisión',
-      // Agregamos un botón para volver al inicio.
+      // Agregamos botones para retroceder y volver al inicio.
       actions: [
+        // Botón de retroceder - solo visible si hay historial
+        if (historyProvider.canGoBack)
+          IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              final previousNodeId = historyProvider.goBack();
+              if (previousNodeId != null) {
+                context.go('/tree/$previousNodeId');
+              }
+            },
+            tooltip: 'Retroceder',
+          ),
         IconButton(
           icon: const Icon(Icons.home),
-          onPressed: () => context.go('/'),
+          onPressed: () {
+            // Reiniciamos el historial al volver al inicio
+            historyProvider.reset();
+            context.go('/');
+          },
           tooltip: 'Volver al Inicio',
         )
       ],
@@ -50,9 +70,12 @@ class TreeNavigatorPage extends StatelessWidget {
                 child: QuestionWidget(
                   key: ValueKey<int>(node.id), // Key para forzar la reconstrucción
                   node: node,
-                  onAnswerSelected: (nextNodeId) {
+                  onAnswerSelected: (nextNodeId, answerText) {
                     final nextNode = decisionTree.getNodeById(nextNodeId);
                     if (nextNode != null) {
+                      // Guardamos la decisión en el historial
+                      historyProvider.navigateToNode(nextNodeId, answerText);
+
                       if (nextNode.isLeaf) {
                         // Si es una hoja, navegamos a la página de detalles del patrón.
                         context.go('/pattern/${nextNode.pattern!.name}');
