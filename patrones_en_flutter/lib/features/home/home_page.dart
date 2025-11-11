@@ -3,7 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../shared/widgets/app_scaffold.dart';
+import '../../core/providers/decision_history_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -45,6 +47,8 @@ class HomePage extends StatelessWidget {
               // Botón de llamada a la acción
               FilledButton.tonal(
                 onPressed: () {
+                  // Reinicia el historial antes de comenzar
+                  Provider.of<DecisionHistoryProvider>(context, listen: false).reset();
                   // Navega al primer nodo del árbol de decisiones (ID 0).
                   context.go('/tree/0');
                 },
