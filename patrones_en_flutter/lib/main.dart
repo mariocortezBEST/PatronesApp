@@ -10,6 +10,7 @@ import 'shared/styles/app_theme.dart';
 import 'core/providers/decision_history_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/providers/favorites_provider.dart';
+import 'core/providers/session_manager_provider.dart';
 
 void main() async {
   // Aseguramos que los bindings de Flutter estén inicializados antes de acceder a plugins
@@ -19,18 +20,21 @@ void main() async {
   final themeProvider = ThemeProvider();
   final favoritesProvider = FavoritesProvider();
   final historyProvider = DecisionHistoryProvider();
+  final sessionManagerProvider = SessionManagerProvider();
 
   // Cargamos los datos guardados de forma paralela para mejor performance
   await Future.wait([
     themeProvider.initialize(),
     favoritesProvider.initialize(),
     historyProvider.initialize(),
+    sessionManagerProvider.initialize(),
   ]);
 
   runApp(DesignPatternApp(
     themeProvider: themeProvider,
     favoritesProvider: favoritesProvider,
     historyProvider: historyProvider,
+    sessionManagerProvider: sessionManagerProvider,
   ));
 }
 
@@ -38,12 +42,14 @@ class DesignPatternApp extends StatelessWidget {
   final ThemeProvider themeProvider;
   final FavoritesProvider favoritesProvider;
   final DecisionHistoryProvider historyProvider;
+  final SessionManagerProvider sessionManagerProvider;
 
   const DesignPatternApp({
     super.key,
     required this.themeProvider,
     required this.favoritesProvider,
     required this.historyProvider,
+    required this.sessionManagerProvider,
   });
 
   @override
@@ -57,6 +63,8 @@ class DesignPatternApp extends StatelessWidget {
         ChangeNotifierProvider<FavoritesProvider>.value(value: favoritesProvider),
         // Provider de historial de decisiones
         ChangeNotifierProvider<DecisionHistoryProvider>.value(value: historyProvider),
+        // Provider de gestión de sesiones guardadas
+        ChangeNotifierProvider<SessionManagerProvider>.value(value: sessionManagerProvider),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

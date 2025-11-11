@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/providers/theme_provider.dart';
 import '../../core/providers/decision_history_provider.dart';
+import '../../core/providers/session_manager_provider.dart';
 import '../../shared/widgets/app_scaffold.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -32,6 +33,8 @@ class SettingsPage extends StatelessWidget {
               _buildSectionHeader(context, 'Datos y Privacidad'),
               const SizedBox(height: 16),
               _buildHistoryPersistenceToggle(context),
+              const SizedBox(height: 16),
+              _buildSessionsLink(context),
               const SizedBox(height: 40),
 
               // Botón para volver
@@ -119,6 +122,20 @@ class SettingsPage extends StatelessWidget {
         value: historyProvider.persistenceEnabled,
         onChanged: (enabled) => historyProvider.setPersistence(enabled),
         secondary: const Icon(Icons.save_outlined),
+      ),
+    );
+  }
+
+  Widget _buildSessionsLink(BuildContext context) {
+    final sessionManager = Provider.of<SessionManagerProvider>(context);
+
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.bookmark_border),
+        title: const Text('Sesiones guardadas'),
+        subtitle: Text('${sessionManager.sessionsCount} sesión${sessionManager.sessionsCount != 1 ? 'es' : ''} guardada${sessionManager.sessionsCount != 1 ? 's' : ''}'),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push('/sessions'),
       ),
     );
   }

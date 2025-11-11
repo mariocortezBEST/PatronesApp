@@ -30,7 +30,8 @@ class DecisionHistoryProvider extends ChangeNotifier {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      _persistenceEnabled = prefs.getBool(_enablePersistenceKey) ?? false;
+      // Persistencia habilitada por defecto para guardar progreso automáticamente
+      _persistenceEnabled = prefs.getBool(_enablePersistenceKey) ?? true;
 
       if (_persistenceEnabled) {
         await _loadHistory();
