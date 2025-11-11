@@ -129,8 +129,8 @@ class DecisionSummaryPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           FilledButton.icon(
-                            onPressed: () {
-                              historyProvider.reset();
+                            onPressed: () async {
+                              await historyProvider.reset();
                               context.go('/');
                             },
                             icon: const Icon(Icons.refresh),

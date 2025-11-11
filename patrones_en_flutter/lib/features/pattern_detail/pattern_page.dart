@@ -25,8 +25,8 @@ class PatternPage extends StatelessWidget {
       actions: [
         IconButton(
           icon: const Icon(Icons.home),
-          onPressed: () {
-            historyProvider.reset();
+          onPressed: () async {
+            await historyProvider.reset();
             context.go('/');
           },
           tooltip: 'Volver al Inicio',
@@ -64,8 +64,8 @@ class PatternPage extends StatelessWidget {
                   const SizedBox(height: 40),
                   Center(
                     child: FilledButton.icon(
-                      onPressed: () {
-                        historyProvider.reset();
+                      onPressed: () async {
+                        await historyProvider.reset();
                         context.go('/tree/0');
                       },
                       icon: const Icon(Icons.replay),

@@ -30,8 +30,8 @@ class TreeNavigatorPage extends StatelessWidget {
         if (historyProvider.canGoBack)
           IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              final previousNodeId = historyProvider.goBack();
+            onPressed: () async {
+              final previousNodeId = await historyProvider.goBack();
               if (previousNodeId != null) {
                 context.go('/tree/$previousNodeId');
               }
@@ -50,9 +50,9 @@ class TreeNavigatorPage extends StatelessWidget {
           ),
         IconButton(
           icon: const Icon(Icons.home),
-          onPressed: () {
+          onPressed: () async {
             // Reiniciamos el historial al volver al inicio
-            historyProvider.reset();
+            await historyProvider.reset();
             context.go('/');
           },
           tooltip: 'Volver al Inicio',
@@ -119,11 +119,11 @@ class TreeNavigatorPage extends StatelessWidget {
                       child: QuestionWidget(
                         key: ValueKey<int>(node.id), // Key para forzar la reconstrucción
                         node: node,
-                        onAnswerSelected: (nextNodeId, answerText) {
+                        onAnswerSelected: (nextNodeId, answerText) async {
                           final nextNode = decisionTree.getNodeById(nextNodeId);
                           if (nextNode != null) {
                             // Guardamos la decisión en el historial
-                            historyProvider.navigateToNode(nextNodeId, answerText);
+                            await historyProvider.navigateToNode(nextNodeId, answerText);
 
                             if (nextNode.isLeaf) {
                               // Si es una hoja, navegamos a la página de detalles del patrón.

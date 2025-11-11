@@ -4,6 +4,7 @@ import 'features/home/home_page.dart';
 import 'features/decision_tree/tree_navigator_page.dart';
 import 'features/decision_tree/decision_summary_page.dart';
 import 'features/pattern_detail/pattern_page.dart';
+import 'features/settings/settings_page.dart';
 import 'core/utils/decision_tree_builder.dart';
 import 'core/models/design_pattern.dart';
 
@@ -30,6 +31,11 @@ class AppRouter {
       GoRoute(
         path: '/summary',
         builder: (context, state) => const DecisionSummaryPage(),
+      ),
+      // Ruta para la página de configuración.
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsPage(),
       ),
       // Ruta para la página de detalles del patrón de diseño.
       // El ':patternName' se usa para encontrar y mostrar el patrón correcto.
