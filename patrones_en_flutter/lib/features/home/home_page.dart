@@ -14,6 +14,13 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: 'Guía de Patrones de Diseño',
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings_outlined),
+          onPressed: () => context.push('/settings'),
+          tooltip: 'Configuración',
+        ),
+      ],
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
@@ -46,9 +53,9 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 40),
               // Botón de llamada a la acción
               FilledButton.tonal(
-                onPressed: () {
+                onPressed: () async {
                   // Reinicia el historial antes de comenzar
-                  Provider.of<DecisionHistoryProvider>(context, listen: false).reset();
+                  await Provider.of<DecisionHistoryProvider>(context, listen: false).reset();
                   // Navega al primer nodo del árbol de decisiones (ID 0).
                   context.go('/tree/0');
                 },
